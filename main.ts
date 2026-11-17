@@ -40,8 +40,12 @@ const OUTPUT_DIR = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
 const LEVELS = [0.05, 0.25, 0.5, 0.75, 0.95];
 /** The standard normal's quantile at each level. */
 const Z = [-1.645, -0.674, 0, 0.674, 1.645];
-/** The residual spread is widened by this before it becomes the quantile spread. */
-const SPREAD_MULT = 1.15;
+/** The residual spread is scaled by this before it becomes the quantile spread.
+ *  Calibrated by leave-one-out on the console-only comparables (inclusive IQR):
+ *  1.15 over-widens (mean pinball 0.1663, 90% coverage 0.940); 1.00 gives the
+ *  best pinball where the multiplier still matters (mean 0.1659, coverage
+ *  0.935), and the 0.35 floor below does most of the widening anyway. */
+const SPREAD_MULT = 1.0;
 /** The quantile spread never claims more precision than this, in log units. */
 const SPREAD_FLOOR = 0.35;
 /** ... and never claims less than this. */
